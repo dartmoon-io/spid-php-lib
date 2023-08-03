@@ -36,6 +36,10 @@ class Base
         $parameters['RelayState'] = is_null($redirectTo) ? (isset($_SERVER['HTTPS'])
             && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
             "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : $redirectTo;
+
+        // Fix to mask the RelayState
+        $parameters['RelayState'] = base64_encode(openssl_encrypt(rawurlencode($parameters['RelayState']), "aes-256-cbc", $parameters['SAMLRequest']));
+
         $parameters['SigAlg'] = 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256';
         $parameters['Signature'] = SignatureUtils::signUrl(
             $parameters['SAMLRequest'],
