@@ -20,6 +20,14 @@ class Settings
         'sp_attributeconsumingservice' => self::NOT_REQUIRED,
         'sp_org_name' => self::NOT_REQUIRED,
         'sp_org_display_name' => self::NOT_REQUIRED,
+        'sp_contact' => [
+            self::REQUIRED => [
+                'ipa_code' => self::REQUIRED,
+                'fiscal_code' => self::NOT_REQUIRED,
+                'email' => self::REQUIRED,
+                'phone' => self::NOT_REQUIRED,
+            ]
+        ],
         'sp_key_cert_values' => [
             self::NOT_REQUIRED => [
                 'countryName' => self::REQUIRED,
