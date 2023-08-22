@@ -2,15 +2,15 @@
 
 namespace Italia\Spid\Saml\In;
 
-use Italia\Spid\Contracts\ResponseInterface;
-use Italia\Spid\Saml;
+use Italia\Spid\Contracts\Saml\ResponseInterface;
+use Italia\Spid\Saml\AbstractSaml;
 
 class LogoutRequest implements ResponseInterface
 {
 
     private $saml;
 
-    public function __construct(Saml $saml)
+    public function __construct(AbstractSaml $saml)
     {
         $this->saml = $saml;
     }
@@ -28,16 +28,17 @@ class LogoutRequest implements ResponseInterface
         if ($xml->getElementsByTagName('SessionIndex')->length == 0) {
             throw new \Exception("Invalid Response. Missing SessionIndex element");
         }
-        
+
+        $issuer = $xml->getElementsByTagName('Issuer')->item(0);
+        $nameId = $xml->getElementsByTagName('NameID')->item(0);
+        $sessionIndex = $xml->getElementsByTagName('SessionIndex')->item(0);
+
         if ($issuer->getAttribute('Destination') == "") {
             throw new \Exception("Missing Destination attribute");
         } elseif ($issuer->getAttribute('Destination') != $this->saml->settings['sp_entityid']) {
             throw new \Exception("Invalid ForDestinationmat attribute");
         }
 
-        $issuer = $xml->getElementsByTagName('Issuer')->item(0);
-        $nameId = $xml->getElementsByTagName('NameID')->item(0);
-        $sessionIndex = $xml->getElementsByTagName('SessionIndex')->item(0);
         if ($issuer->getAttribute('Format') == "") {
             throw new \Exception("Missing Format attribute");
         } elseif ($issuer->getAttribute('Format') != "urn:oasis:names:tc:SAML:2.0:nameid-format:entity") {

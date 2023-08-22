@@ -2,7 +2,7 @@
 
 namespace Italia\Spid\Saml\Out;
 
-use Italia\Spid\Contracts\RequestInterface;
+use Italia\Spid\Contracts\Saml\RequestInterface;
 use Italia\Spid\Saml\Settings;
 use Italia\Spid\Saml\SignatureUtils;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Italia\Spid\Contracts;
+namespace Italia\Spid\Contracts\Saml;
 
 use Italia\Spid\Session;
 

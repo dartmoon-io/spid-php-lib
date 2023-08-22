@@ -2,7 +2,7 @@
 
 namespace Italia\Spid\Saml;
 
-use Italia\Spid\Contracts\IdpInterface;
+use Italia\Spid\Contracts\Saml\IdpInterface;
 use Italia\Spid\Saml\Out\AuthnRequest;
 use Italia\Spid\Saml\Out\LogoutRequest;
 use Italia\Spid\Session;

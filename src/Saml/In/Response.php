@@ -2,16 +2,16 @@
 
 namespace Italia\Spid\Saml\In;
 
-use Italia\Spid\Contracts\ResponseInterface;
+use Italia\Spid\Contracts\Saml\ResponseInterface;
 use Italia\Spid\Session;
-use Italia\Spid\Saml;
+use Italia\Spid\Saml\AbstractSaml;
 
 class Response implements ResponseInterface
 {
 
     private $saml;
 
-    public function __construct(Saml $saml)
+    public function __construct(AbstractSaml $saml)
     {
         $this->saml = $saml;
     }

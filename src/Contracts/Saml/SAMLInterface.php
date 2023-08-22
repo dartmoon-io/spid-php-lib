@@ -1,6 +1,6 @@
 <?php
 
-namespace Italia\Spid\Contracts;
+namespace Italia\Spid\Contracts\Saml;
 
 // service provider class
 use Italia\Spid\Saml\Idp;

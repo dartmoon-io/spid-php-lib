@@ -19,9 +19,14 @@ class Sp
             session_start();
         }
         switch ($protocol) {
-            case 'saml':
+            case 'spid':
                 $this->protocol = new Spid\Saml($settings, $autoconfigure);
                 break;
+
+            case 'cie':
+                $this->protocol = new Cie\Saml($settings, $autoconfigure);
+                break;
+
             default:
                 $this->protocol = new Spid\Saml($settings, $autoconfigure);
         }

@@ -3,7 +3,7 @@
 namespace Italia\Spid\Saml\In;
 
 use Italia\Spid\Saml\SignatureUtils;
-use Italia\Spid\Saml;
+use Italia\Spid\Saml\AbstractSaml;
 
 /*
 * Generates the proper response object at runtime by reading the input XML.
@@ -22,7 +22,7 @@ class BaseResponse
     private $xml;
     private $root;
 
-    public function __construct(Saml $saml = null)
+    public function __construct(AbstractSaml $saml = null)
     {
         if ((!isset($_POST) || !isset($_POST['SAMLResponse'])) &&
             (!isset($_GET) || !isset($_GET['SAMLResponse']))

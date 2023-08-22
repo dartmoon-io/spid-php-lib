@@ -2,7 +2,7 @@
 
 namespace Italia\Spid\Saml\In;
 
-use Italia\Spid\Contracts\ResponseInterface;
+use Italia\Spid\Contracts\Saml\ResponseInterface;
 
 class LogoutResponse implements ResponseInterface
 {
