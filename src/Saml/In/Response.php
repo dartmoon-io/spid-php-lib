@@ -1,10 +1,10 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml\In;
+namespace Italia\Spid\Saml\In;
 
-use Italia\Spid\Spid\Interfaces\ResponseInterface;
-use Italia\Spid\Spid\Session;
-use Italia\Spid\Spid\Saml;
+use Italia\Spid\Contracts\ResponseInterface;
+use Italia\Spid\Session;
+use Italia\Spid\Saml;
 
 class Response implements ResponseInterface
 {

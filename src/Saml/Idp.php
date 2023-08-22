@@ -1,12 +1,12 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml;
+namespace Italia\Spid\Saml;
 
-use Italia\Spid\Spid\Interfaces\IdpInterface;
-use Italia\Spid\Spid\Saml\Out\AuthnRequest;
-use Italia\Spid\Spid\Saml\Out\LogoutRequest;
-use Italia\Spid\Spid\Session;
-use Italia\Spid\Spid\Saml\Out\LogoutResponse;
+use Italia\Spid\Contracts\IdpInterface;
+use Italia\Spid\Saml\Out\AuthnRequest;
+use Italia\Spid\Saml\Out\LogoutRequest;
+use Italia\Spid\Session;
+use Italia\Spid\Saml\Out\LogoutResponse;
 
 class Idp implements IdpInterface
 {

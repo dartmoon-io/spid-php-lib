@@ -1,9 +1,9 @@
 <?php
 
-namespace Italia\Spid\Spid\Interfaces;
+namespace Italia\Spid\Contracts;
 
 // service provider class
-use Italia\Spid\Spid\Saml\Idp;
+use Italia\Spid\Saml\Idp;
 
 interface SAMLInterface
 {

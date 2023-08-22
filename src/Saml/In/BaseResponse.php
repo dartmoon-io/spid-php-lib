@@ -1,9 +1,9 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml\In;
+namespace Italia\Spid\Saml\In;
 
-use Italia\Spid\Spid\Saml\SignatureUtils;
-use Italia\Spid\Spid\Saml;
+use Italia\Spid\Saml\SignatureUtils;
+use Italia\Spid\Saml;
 
 /*
 * Generates the proper response object at runtime by reading the input XML.

@@ -39,8 +39,8 @@ final class IdpTest extends PHPUnit\Framework\TestCase
     {
        $sp = new Italia\Spid\Sp(IdpTest::$settings);
        $this->assertInstanceOf(
-            Italia\Spid\Spid\Saml\Idp::class,
-            new Italia\Spid\Spid\Saml\Idp($sp)
+            Italia\Spid\Saml\Idp::class,
+            new Italia\Spid\Saml\Idp($sp)
         );
     }
 
@@ -48,11 +48,11 @@ final class IdpTest extends PHPUnit\Framework\TestCase
     {
         $result = self::setupIdps();
 
-        $sp = new Italia\Spid\Spid\Saml(IdpTest::$settings);
-        $idp = new Italia\Spid\Spid\Saml\Idp($sp);
+        $sp = new Italia\Spid\Saml(IdpTest::$settings);
+        $idp = new Italia\Spid\Saml\Idp($sp);
         $loaded = $idp->loadFromXml(self::$idps[0]);
         $this->assertInstanceOf(
-            Italia\Spid\Spid\Saml\Idp::class,
+            Italia\Spid\Saml\Idp::class,
             $loaded
         );
         $this->assertNotEmpty($idp->idpFileName);
@@ -66,11 +66,11 @@ final class IdpTest extends PHPUnit\Framework\TestCase
 
     public function testCanLoadFromValidXMLFullPath()
     {
-        $sp = new Italia\Spid\Spid\Saml(IdpTest::$settings);
-        $idp = new Italia\Spid\Spid\Saml\Idp($sp);
+        $sp = new Italia\Spid\Saml(IdpTest::$settings);
+        $idp = new Italia\Spid\Saml\Idp($sp);
         $loaded = $idp->loadFromXml(self::$idps[0]);
         $this->assertInstanceOf(
-            Italia\Spid\Spid\Saml\Idp::class,
+            Italia\Spid\Saml\Idp::class,
             $loaded
         );
       $this->assertNotEmpty($idp->idpFileName);
@@ -79,8 +79,8 @@ final class IdpTest extends PHPUnit\Framework\TestCase
 
     public function testLoadXMLWIthWrongFilePath()
     {
-        $sp = new Italia\Spid\Spid\Saml(IdpTest::$settings);
-        $idp = new Italia\Spid\Spid\Saml\Idp($sp);
+        $sp = new Italia\Spid\Saml(IdpTest::$settings);
+        $idp = new Italia\Spid\Saml\Idp($sp);
         $sp->settings['idp_metadata_folder'] = '/wrong/path/to/metadata/';
 
         $this->expectException(\Exception::class);

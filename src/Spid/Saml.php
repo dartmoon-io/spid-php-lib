@@ -2,12 +2,12 @@
 
 namespace Italia\Spid\Spid;
 
-use Italia\Spid\Spid\Saml\Idp;
-use Italia\Spid\Spid\Saml\In\BaseResponse;
-use Italia\Spid\Spid\Saml\Settings;
-use Italia\Spid\Spid\Saml\SignatureUtils;
-use Italia\Spid\Spid\Interfaces\SAMLInterface;
-use Italia\Spid\Spid\Session;
+use Italia\Spid\Saml\Idp;
+use Italia\Spid\Saml\In\BaseResponse;
+use Italia\Spid\Saml\Settings;
+use Italia\Spid\Saml\SignatureUtils;
+use Italia\Spid\Contracts\SAMLInterface;
+use Italia\Spid\Session;
 
 class Saml implements SAMLInterface
 {

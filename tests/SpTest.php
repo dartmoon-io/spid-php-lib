@@ -332,7 +332,7 @@ final class SpTest extends PHPUnit\Framework\TestCase
         $result = self::setupIdps();
 
         $sp = new Italia\Spid\Sp(SpTest::$settings);
-        $session = new Italia\Spid\Spid\Session();
+        $session = new Italia\Spid\Session();
         $session->idp = self::$idps[0];
         // IF these values are not set, the session is invalid
         // $session->idpEntityID = 'https:/sp.example.com/';
@@ -378,7 +378,7 @@ final class SpTest extends PHPUnit\Framework\TestCase
         $result = self::setupIdps();
 
         $sp = new Italia\Spid\Sp(SpTest::$settings);
-        $session = new Italia\Spid\Spid\Session();
+        $session = new Italia\Spid\Session();
         $session->idp = self::$idps[0];
         $session->idpEntityID = 'https:/sp.example.com/';
         $session->level = 1;
@@ -408,7 +408,7 @@ final class SpTest extends PHPUnit\Framework\TestCase
 
         // Authenticate first
         $sp = new Italia\Spid\Sp(SpTest::$settings);
-        $session = new Italia\Spid\Spid\Session();
+        $session = new Italia\Spid\Session();
         $session->idp = self::$idps[0];
         $session->idpEntityID = 'https:/sp.example.com/';
         $session->level = 1;
@@ -462,7 +462,7 @@ final class SpTest extends PHPUnit\Framework\TestCase
         $result = self::setupIdps();
 
         $sp = new Italia\Spid\Sp(SpTest::$settings);
-        $session = new Italia\Spid\Spid\Session();
+        $session = new Italia\Spid\Session();
         $session->idp = self::$idps[0];
         $session->idpEntityID = 'https:/sp.example.com/';
         $session->level = 1;

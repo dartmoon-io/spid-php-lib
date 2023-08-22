@@ -1,8 +1,8 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml\In;
+namespace Italia\Spid\Saml\In;
 
-use Italia\Spid\Spid\Interfaces\ResponseInterface;
+use Italia\Spid\Contracts\ResponseInterface;
 
 class LogoutResponse implements ResponseInterface
 {

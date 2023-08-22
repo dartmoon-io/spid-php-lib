@@ -1,9 +1,9 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml\Out;
+namespace Italia\Spid\Saml\Out;
 
-use Italia\Spid\Spid\Saml\Idp;
-use Italia\Spid\Spid\Saml\SignatureUtils;
+use Italia\Spid\Saml\Idp;
+use Italia\Spid\Saml\SignatureUtils;
 
 class Base
 {

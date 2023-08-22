@@ -1,6 +1,6 @@
 <?php
 
-namespace Italia\Spid\Spid;
+namespace Italia\Spid;
 
 class Session
 {

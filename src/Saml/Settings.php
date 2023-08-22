@@ -1,6 +1,6 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml;
+namespace Italia\Spid\Saml;
 
 class Settings
 {

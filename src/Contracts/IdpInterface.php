@@ -1,8 +1,8 @@
 <?php
 
-namespace Italia\Spid\Spid\Interfaces;
+namespace Italia\Spid\Contracts;
 
-use Italia\Spid\Spid\Session;
+use Italia\Spid\Session;
 
 interface IdpInterface
 {

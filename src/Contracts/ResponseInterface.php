@@ -1,6 +1,6 @@
 <?php
 
-namespace Italia\Spid\Spid\Interfaces;
+namespace Italia\Spid\Contracts;
 
 interface ResponseInterface
 {

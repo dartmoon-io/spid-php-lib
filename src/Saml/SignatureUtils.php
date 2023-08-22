@@ -1,6 +1,6 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml;
+namespace Italia\Spid\Saml;
 
 use RobRichards\XMLSecLibs\XMLSecurityDSig;
 use RobRichards\XMLSecLibs\XMLSecurityKey;

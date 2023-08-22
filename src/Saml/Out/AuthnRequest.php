@@ -1,10 +1,10 @@
 <?php
 
-namespace Italia\Spid\Spid\Saml\Out;
+namespace Italia\Spid\Saml\Out;
 
-use Italia\Spid\Spid\Interfaces\RequestInterface;
-use Italia\Spid\Spid\Saml\Settings;
-use Italia\Spid\Spid\Saml\SignatureUtils;
+use Italia\Spid\Contracts\RequestInterface;
+use Italia\Spid\Saml\Settings;
+use Italia\Spid\Saml\SignatureUtils;
 
 class AuthnRequest extends Base implements RequestInterface
 {
