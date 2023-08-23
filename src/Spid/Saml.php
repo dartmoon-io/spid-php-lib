@@ -2,12 +2,64 @@
 
 namespace Italia\Spid\Spid;
 
-use Italia\Spid\Saml\Settings;
 use Italia\Spid\Saml\SignatureUtils;
 use Italia\Spid\Saml\AbstractSaml;
+use Italia\Spid\Saml\Binding;
+use Italia\Spid\Saml\Validator;
 
 class Saml extends AbstractSaml
 {
+    protected $settingsDefinition = [
+        'sp_entityid' => Validator::REQUIRED,
+        'sp_key_file' => Validator::REQUIRED,
+        'sp_cert_file' => Validator::REQUIRED,
+        'sp_comparison' => Validator::NOT_REQUIRED,
+        'sp_assertionconsumerservice' => Validator::REQUIRED,
+        'sp_singlelogoutservice' => Validator::REQUIRED,
+        'sp_attributeconsumingservice' => Validator::NOT_REQUIRED,
+        'sp_org_name' => Validator::NOT_REQUIRED,
+        'sp_org_display_name' => Validator::NOT_REQUIRED,
+        'sp_contact' => [
+            Validator::REQUIRED => [
+                'ipa_code' => Validator::REQUIRED,
+                'fiscal_code' => Validator::NOT_REQUIRED,
+                'email' => Validator::REQUIRED,
+                'phone' => Validator::NOT_REQUIRED,
+            ]
+        ],
+        'sp_key_cert_values' => [
+            Validator::NOT_REQUIRED => [
+                'countryName' => Validator::REQUIRED,
+                'stateOrProvinceName' => Validator::REQUIRED,
+                'localityName' => Validator::REQUIRED,
+                'commonName' => Validator::REQUIRED,
+                'emailAddress' => Validator::REQUIRED
+            ]
+        ],
+        'idp_metadata_folder' => Validator::REQUIRED,
+        'accepted_clock_skew_seconds' => Validator::NOT_REQUIRED
+    ];
+
+    protected $validAttributeFields = [
+        "gender",
+        "companyName",
+        "registeredOffice",
+        "fiscalNumber",
+        "ivaCode",
+        "idCard",
+        "spidCode",
+        "name",
+        "familyName",
+        "placeOfBirth",
+        "countyOfBirth",
+        "dateOfBirth",
+        "mobilePhone",
+        "email",
+        "address",
+        "expirationDate",
+        "digitalAddress"
+    ];
+
     public function getSPMetadata(): string
     {
         if (!is_readable($this->settings['sp_cert_file'])) {
@@ -18,7 +70,7 @@ XML;
         
         $entityID = htmlspecialchars($this->settings['sp_entityid'], ENT_XML1);
         $id = preg_replace('/[^a-z0-9_-]/', '_', $entityID);
-        $cert = Settings::cleanOpenSsl($this->settings['sp_cert_file']);
+        $cert = SignatureUtils::cleanOpenSsl($this->settings['sp_cert_file']);
 
         $sloLocationArray = $this->settings['sp_singlelogoutservice'] ?? array();
         $assertcsArray = $this->settings['sp_assertionconsumerservice'] ?? array();
@@ -39,9 +91,9 @@ XML;
             $location = htmlspecialchars($slo[0], ENT_XML1);
             $binding = $slo[1];
             if (strcasecmp($binding, "POST") === 0 || strcasecmp($binding, "") === 0) {
-                $binding = Settings::BINDING_POST;
+                $binding = Binding::BINDING_POST;
             } else {
-                $binding = Settings::BINDING_REDIRECT;
+                $binding = Binding::BINDING_REDIRECT;
             }
             $xml .= <<<XML
 

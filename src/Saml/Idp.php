@@ -88,7 +88,7 @@ class Idp implements IdpInterface
         $this->level = $level;
 
         $authn = new AuthnRequest($this);
-        $url = $binding == Settings::BINDING_REDIRECT ?
+        $url = $binding == Binding::BINDING_REDIRECT ?
             $authn->redirectUrl($redirectTo) :
             $authn->httpPost($redirectTo);
         $_SESSION['RequestID'] = $authn->id;
@@ -96,7 +96,7 @@ class Idp implements IdpInterface
         $_SESSION['idpEntityId'] = $this->metadata['idpEntityId'];
         $_SESSION['acsUrl'] = $this->sp->settings['sp_assertionconsumerservice'][$ass];
 
-        if (!$shouldRedirect || $binding == Settings::BINDING_POST) {
+        if (!$shouldRedirect || $binding == Binding::BINDING_POST) {
             return $url;
         }
 
@@ -111,7 +111,7 @@ class Idp implements IdpInterface
         $this->session = $session;
 
         $logoutRequest = new LogoutRequest($this);
-        $url = ($binding == Settings::BINDING_REDIRECT) ?
+        $url = ($binding == Binding::BINDING_REDIRECT) ?
             $logoutRequest->redirectUrl($redirectTo) :
             $logoutRequest->httpPost($redirectTo);
 
@@ -120,7 +120,7 @@ class Idp implements IdpInterface
         $_SESSION['idpEntityId'] = $this->metadata['idpEntityId'];
         $_SESSION['sloUrl'] = reset($this->sp->settings['sp_singlelogoutservice'][$slo]);
 
-        if (!$shouldRedirect || $binding == Settings::BINDING_POST) {
+        if (!$shouldRedirect || $binding == Binding::BINDING_POST) {
             return $url;
             exit;
         }
@@ -133,16 +133,16 @@ class Idp implements IdpInterface
 
     public function logoutResponse() : string
     {
-        $binding = Settings::BINDING_POST;
+        $binding = Binding::BINDING_POST;
         $redirectTo = $this->sp->settings['sp_entityid'];
 
         $logoutResponse = new LogoutResponse($this);
-        $url = ($binding == Settings::BINDING_REDIRECT) ?
+        $url = ($binding == Binding::BINDING_REDIRECT) ?
             $logoutResponse->redirectUrl($redirectTo) :
             $logoutResponse->httpPost($redirectTo);
         unset($_SESSION);
         
-        if ($binding == Settings::BINDING_POST) {
+        if ($binding == Binding::BINDING_POST) {
             return $url;
             exit;
         }

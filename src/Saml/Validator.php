@@ -2,71 +2,17 @@
 
 namespace Italia\Spid\Saml;
 
-class Settings
+class Validator
 {
-    const BINDING_REDIRECT = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect';
-    const BINDING_POST = 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST';
-
     const REQUIRED = 1;
     const NOT_REQUIRED = 0;
-    // Settings with value 1 are mandatory
-    private static $validSettings = [
-        'sp_entityid' => self::REQUIRED,
-        'sp_key_file' => self::REQUIRED,
-        'sp_cert_file' => self::REQUIRED,
-        'sp_comparison' => self::NOT_REQUIRED,
-        'sp_assertionconsumerservice' => self::REQUIRED,
-        'sp_singlelogoutservice' => self::REQUIRED,
-        'sp_attributeconsumingservice' => self::NOT_REQUIRED,
-        'sp_org_name' => self::NOT_REQUIRED,
-        'sp_org_display_name' => self::NOT_REQUIRED,
-        'sp_contact' => [
-            self::REQUIRED => [
-                'ipa_code' => self::REQUIRED,
-                'fiscal_code' => self::NOT_REQUIRED,
-                'email' => self::REQUIRED,
-                'phone' => self::NOT_REQUIRED,
-            ]
-        ],
-        'sp_key_cert_values' => [
-            self::NOT_REQUIRED => [
-                'countryName' => self::REQUIRED,
-                'stateOrProvinceName' => self::REQUIRED,
-                'localityName' => self::REQUIRED,
-                'commonName' => self::REQUIRED,
-                'emailAddress' => self::REQUIRED
-            ]
-        ],
-        'idp_metadata_folder' => self::REQUIRED,
-        'accepted_clock_skew_seconds' => self::NOT_REQUIRED
-    ];
 
-    private static $validAttributeFields = [
-        "gender",
-        "companyName",
-        "registeredOffice",
-        "fiscalNumber",
-        "ivaCode",
-        "idCard",
-        "spidCode",
-        "name",
-        "familyName",
-        "placeOfBirth",
-        "countyOfBirth",
-        "dateOfBirth",
-        "mobilePhone",
-        "email",
-        "address",
-        "expirationDate",
-        "digitalAddress"
-    ];
-
-    public static function validateSettings(array $settings)
+    public static function validateSettings(array $settings, array $settingsDefinition, array $validAttributeFields)
     {
         $missingSettings = array();
         $msg = 'Missing settings fields: ';
-        array_walk(self::$validSettings, function ($v, $k) use (&$missingSettings, &$settings) {
-            $settingRequired = self::$validSettings[$k];
+        array_walk($settingsDefinition, function ($v, $k) use (&$missingSettings, &$settings, $settingsDefinition) {
+            $settingRequired = $settingsDefinition[$k];
             $childSettings = [];
             if (is_array($v) && isset($v[self::REQUIRED])) {
                 $settingRequired = self::REQUIRED;
@@ -89,9 +35,9 @@ class Settings
             throw new \Exception($msg);
         }
 
-        $invalidFields = array_diff_key($settings, self::$validSettings);
+        $invalidFields = array_diff_key($settings, $settingsDefinition);
         // Check for settings that have child values
-        array_walk(self::$validSettings, function ($v, $k) use (&$invalidFields) {
+        array_walk($settingsDefinition, function ($v, $k) use (&$invalidFields) {
             // Child values found, check if settings array is set for that key
             if (is_array($v) && isset($settings[$k])) {
                 // $v has at most 2 keys, self::REQUIRED and self::NOT_REQUIRED
@@ -108,29 +54,10 @@ class Settings
             throw new \Exception($msg);
         }
 
-        self::checkSettingsValues($settings);
+        self::checkSettingsValues($settings, $validAttributeFields);
     }
 
-    public static function cleanOpenSsl($file, $isCert = false)
-    {
-        if ($isCert) {
-            $k = $file;
-        } else {
-            if (!is_readable($file)) {
-                throw new \Exception('File '.$file.' is not readable. Please check file permissions.');
-            }
-            $k = file_get_contents($file);
-        }
-        $ck = '';
-        foreach (preg_split("/((\r?\n)|(\r\n?))/", $k) as $l) {
-            if (strpos($l, '-----') === false) {
-                $ck .= $l;
-            }
-        }
-        return $ck;
-    }
-
-    private static function checkSettingsValues($settings)
+    protected static function checkSettingsValues($settings, $validAttributeFields)
     {
         if (filter_var($settings['sp_entityid'], FILTER_VALIDATE_URL) === false) {
             throw new \InvalidArgumentException('Invalid SP Entity ID provided');
@@ -145,7 +72,7 @@ class Settings
             if (!is_array($settings['sp_attributeconsumingservice'])) {
                 throw new \InvalidArgumentException('sp_attributeconsumingservice should be an array');
             }
-            array_walk($settings['sp_attributeconsumingservice'], function ($acs) {
+            array_walk($settings['sp_attributeconsumingservice'], function ($acs) use ($validAttributeFields) {
                 if (!is_array($acs)) {
                     throw new \InvalidArgumentException('sp_attributeconsumingservice elements should be an arrays');
                 }
@@ -154,8 +81,8 @@ class Settings
                         'sp_attributeconsumingservice elements should contain at least one element'
                     );
                 }
-                array_walk($acs, function ($field) {
-                    if (!in_array($field, self::$validAttributeFields)) {
+                array_walk($acs, function ($field) use ($validAttributeFields) {
+                    if (!in_array($field, $validAttributeFields)) {
                         throw new \InvalidArgumentException('Invalid Attribute field '. $field .' requested');
                     }
                 });

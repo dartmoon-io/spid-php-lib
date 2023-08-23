@@ -75,8 +75,8 @@ class SignatureUtils
         }
         $dom = clone $xml->ownerDocument;
 
-        $certFingerprint = Settings::cleanOpenSsl($cert, true);
-        $signCertFingerprint = Settings::cleanOpenSsl(
+        $certFingerprint = self::cleanOpenSsl($cert, true);
+        $signCertFingerprint = self::cleanOpenSsl(
             $dom->getElementsByTagName('X509Certificate')->item(0)->nodeValue,
             true
         );
@@ -94,7 +94,7 @@ class SignatureUtils
 
         try {
             $retVal = $objXMLSecDSig->validateReference();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
 
@@ -171,5 +171,24 @@ class SignatureUtils
             $res = $xpath->query($query);
         }
         return $res;
+    }
+
+    public static function cleanOpenSsl($file, $isCert = false)
+    {
+        if ($isCert) {
+            $k = $file;
+        } else {
+            if (!is_readable($file)) {
+                throw new \Exception('File '.$file.' is not readable. Please check file permissions.');
+            }
+            $k = file_get_contents($file);
+        }
+        $ck = '';
+        foreach (preg_split("/((\r?\n)|(\r\n?))/", $k) as $l) {
+            if (strpos($l, '-----') === false) {
+                $ck .= $l;
+            }
+        }
+        return $ck;
     }
 }

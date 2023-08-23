@@ -4,7 +4,6 @@ namespace Italia\Spid\Saml;
 
 use Italia\Spid\Saml\Idp;
 use Italia\Spid\Saml\In\BaseResponse;
-use Italia\Spid\Saml\Settings;
 use Italia\Spid\Saml\SignatureUtils;
 use Italia\Spid\Contracts\Saml\SAMLInterface;
 use Italia\Spid\Session;
@@ -15,11 +14,15 @@ abstract class AbstractSaml implements SAMLInterface
     protected $idps = []; // contains filename -> Idp object array
     protected $session; // Session object
 
+    // Settings definition
+    protected $settingsDefinition = [];
+    protected $validAttributeFields = [];
+
     abstract public function getSPMetadata(): string;
 
     public function __construct(array $settings, $autoconfigure = true)
     {
-        Settings::validateSettings($settings);
+        Validator::validateSettings($settings, $this->settingsDefinition, $this->validAttributeFields);
         $this->settings = $settings;
 
         // Do not attemp autoconfiguration if key and cert values have not been set
@@ -74,7 +77,7 @@ abstract class AbstractSaml implements SAMLInterface
         $shouldRedirect = true
     ) {
         $args = func_get_args();
-        return $this->baseLogin(Settings::BINDING_REDIRECT, ...$args);
+        return $this->baseLogin(Binding::BINDING_REDIRECT, ...$args);
     }
 
     public function loginPost(
@@ -86,7 +89,7 @@ abstract class AbstractSaml implements SAMLInterface
         $shouldRedirect = true
     ) {
         $args = func_get_args();
-        return $this->baseLogin(Settings::BINDING_POST, ...$args);
+        return $this->baseLogin(Binding::BINDING_POST, ...$args);
     }
 
     protected function baseLogin(
@@ -144,13 +147,13 @@ abstract class AbstractSaml implements SAMLInterface
     public function logout(int $slo, string $redirectTo = null, $shouldRedirect = true)
     {
         $args = func_get_args();
-        return $this->baseLogout(Settings::BINDING_REDIRECT, ...$args);
+        return $this->baseLogout(Binding::BINDING_REDIRECT, ...$args);
     }
 
     public function logoutPost(int $slo, string $redirectTo = null, $shouldRedirect = true)
     {
         $args = func_get_args();
-        return $this->baseLogout(Settings::BINDING_POST, ...$args);
+        return $this->baseLogout(Binding::BINDING_POST, ...$args);
     }
 
     protected function baseLogout($binding, $slo, $redirectTo = null, $shouldRedirect = true)

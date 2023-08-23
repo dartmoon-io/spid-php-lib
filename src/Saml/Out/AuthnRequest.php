@@ -3,7 +3,7 @@
 namespace Italia\Spid\Saml\Out;
 
 use Italia\Spid\Contracts\Saml\RequestInterface;
-use Italia\Spid\Saml\Settings;
+use Italia\Spid\Saml\Binding;
 use Italia\Spid\Saml\SignatureUtils;
 
 class AuthnRequest extends Base implements RequestInterface
@@ -54,7 +54,7 @@ XML;
 
     public function redirectUrl($redirectTo = null) : string
     {
-        $location = parent::getBindingLocation(Settings::BINDING_REDIRECT);
+        $location = parent::getBindingLocation(Binding::BINDING_REDIRECT);
         if (is_null($this->xml)) {
             $this->generateXml();
         }
@@ -63,7 +63,7 @@ XML;
 
     public function httpPost($redirectTo = null) : string
     {
-        $location = parent::getBindingLocation(Settings::BINDING_POST);
+        $location = parent::getBindingLocation(Binding::BINDING_POST);
         if (is_null($this->xml)) {
             $this->generateXml();
         }
