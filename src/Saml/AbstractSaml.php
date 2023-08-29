@@ -125,15 +125,18 @@ abstract class AbstractSaml implements SAMLInterface
         if (is_null($selectedIdp)) {
             return false;
         }
+
         $idp = $this->loadIdpFromFile($selectedIdp);
         $response = new BaseResponse($this);
         if (!empty($idp) && !$response->validate($idp->metadata['idpCertValue'])) {
             return false;
         }
+
         if (isset($_SESSION) && isset($_SESSION['inResponseTo'])) {
             $idp->logoutResponse();
             return false;
         }
+
         if (isset($_SESSION) && isset($_SESSION['spidSession'])) {
             $session = new Session($_SESSION['spidSession']);
             if ($session->isValid()) {
@@ -141,6 +144,7 @@ abstract class AbstractSaml implements SAMLInterface
                 return true;
             }
         }
+
         return false;
     }
 
