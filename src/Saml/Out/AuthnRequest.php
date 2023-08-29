@@ -8,13 +8,13 @@ use Italia\Spid\Saml\SignatureUtils;
 
 class AuthnRequest extends Base implements RequestInterface
 {
-    public function generateXml()
+    public function generateXml($destination)
     {
         $id = $this->generateID();
         $issueInstant = $this->generateIssueInstant();
         $entityId = $this->idp->sp->settings['sp_entityid'];
 
-        $idpEntityId = $this->idp->metadata['idpEntityId'];
+        // $idpEntityId = $this->idp->metadata['idpEntityId'];
         $assertID = $this->idp->assertID;
         $attrID = $this->idp->attrID;
         $level = $this->idp->level;
@@ -31,7 +31,7 @@ class AuthnRequest extends Base implements RequestInterface
     ID="$id" 
     Version="2.0"
     IssueInstant="$issueInstant"
-    Destination="$idpEntityId"
+    Destination="$destination"
     ForceAuthn="$force"
     AssertionConsumerServiceIndex="$assertID">
     <saml:Issuer
@@ -56,7 +56,7 @@ XML;
     {
         $location = parent::getBindingLocation(Binding::BINDING_REDIRECT);
         if (is_null($this->xml)) {
-            $this->generateXml();
+            $this->generateXml($location);
         }
         return parent::redirect($location, $redirectTo);
     }
@@ -65,7 +65,7 @@ XML;
     {
         $location = parent::getBindingLocation(Binding::BINDING_POST);
         if (is_null($this->xml)) {
-            $this->generateXml();
+            $this->generateXml($location);
         }
         $this->xml = SignatureUtils::signXml($this->xml, $this->idp->sp->settings);
         return parent::postForm($location, $redirectTo);
