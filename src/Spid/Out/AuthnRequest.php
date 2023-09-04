@@ -13,9 +13,10 @@ class AuthnRequest extends AbstractAuthnRequest
         $entityId = $this->sp->settings['sp_entityid'];
 
         // $idpEntityId = $this->idp->metadata['idpEntityId'];
-        $assertID = $this->idp->assertID;
-        $attrID = $this->idp->attrID;
-        $level = $this->idp->level;
+        $assertID = $this->assertID;
+        $attrID = $this->attrID;
+        $level = $this->level;
+
         if (isset($this->sp->settings['sp_comparison'])) {
             $comparison = $this->sp->settings['sp_comparison'];
         } else {

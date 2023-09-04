@@ -6,8 +6,6 @@ use Italia\Spid\Saml\Idp;
 use Italia\Spid\Saml\SignatureUtils;
 use Italia\Spid\Saml\Contracts\SpInterface;
 use Italia\Spid\Saml\In\ResponseWrapper;
-use Italia\Spid\Saml\Out\LogoutRequest;
-use Italia\Spid\Saml\Out\LogoutResponse;
 use Italia\Spid\Saml\Session;
 
 abstract class AbstractSp implements SpInterface
@@ -89,14 +87,16 @@ abstract class AbstractSp implements SpInterface
             throw new \Exception("Invalid Assertion Consumer Service ID");
         }
 
-        if (isset($this->settings['sp_attributeconsumingservice']) && !isset($this->settings['sp_attributeconsumingservice'][$attrId])) {
-            throw new \Exception("Invalid Attribute Consuming Service ID");
+        if (isset($this->settings['sp_attributeconsumingservice'])) {
+            if (!isset($this->settings['sp_attributeconsumingservice'][$attrId])) {
+                throw new \Exception("Invalid Attribute Consuming Service ID");
+            }
         } else {
             $attrId = null;
         }
 
         $idp = $this->getIdp($idpName);
-        $authn = new $this->requestClasses['AuthnRequest']($this, $idp);
+        $authn = new $this->requestClasses['AuthnRequest']($this, $idp, $assertId, $attrId, $level);
         $url = $isPost ? $authn->httpPost($redirectTo) : $authn->redirectUrl($redirectTo); 
 
         // Setup the session

@@ -14,11 +14,18 @@ abstract class AbstractRequest implements RequestInterface
     public $xml;
     public $id;
     public $issueInstant;
+    public $assertID;
+    public $attrID;
+    public $level;
 
-    public function __construct(SpInterface $sp, Idp $idp)
+    public function __construct(SpInterface $sp, Idp $idp, $assertID = null, $attrID = null, $level = null)
     {
         $this->sp = $sp;
         $this->idp = $idp;
+
+        $this->assertID = $assertID;
+        $this->attrID = $attrID;
+        $this->level = $level;
     }
 
     public function generateID()
