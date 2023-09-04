@@ -112,7 +112,7 @@ class SignatureUtils
         $parsed = openssl_x509_parse($cert);
         $dn = $parsed['subject'];
 
-        $newDN = array();
+        $newDN = [];
         $newDN[] = $settings['sp_org_name'] ?? [];
         $newDN[] = $settings['sp_org_display_name'] ?? [];
         $newDN = array_merge($newDN, $settings['sp_key_cert_values'] ?? []);
@@ -153,7 +153,7 @@ class SignatureUtils
         ];
     }
 
-    private static function query(\DOMDocument $dom, $query, \DOMElement $context = null)
+    protected static function query(\DOMDocument $dom, $query, \DOMElement $context = null)
     {
         $xpath = new \DOMXPath($dom);
 

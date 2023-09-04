@@ -9,7 +9,7 @@ class Validator
 
     public static function validateSettings(array $settings, array $settingsDefinition, array $validAttributeFields)
     {
-        $missingSettings = array();
+        $missingSettings = [];
         $msg = 'Missing settings fields: ';
         array_walk($settingsDefinition, function ($v, $k) use (&$missingSettings, &$settings, $settingsDefinition) {
             $settingRequired = $settingsDefinition[$k];

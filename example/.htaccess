@@ -1,8 +1,0 @@
-RewriteEngine On
-RewriteBase /
-RewriteCond %{REQUEST_FILENAME}% !-d
-RewriteCond %{REQUEST_FILENAME}% !-f
-
-RewriteRule ^(views/spid-smart-button)($|/) - [L]
-
-RewriteRule ^(.+)$ index.php [QSA,L]
