@@ -32,6 +32,7 @@ class ResponseWrapper
         ) {
             return;
         }
+        
         $xmlString = isset($_GET['SAMLResponse']) 
             ? gzinflate(base64_decode($_GET['SAMLResponse']))
             : base64_decode($_POST['SAMLResponse']);
