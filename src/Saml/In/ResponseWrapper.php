@@ -23,7 +23,7 @@ class ResponseWrapper
     protected $root;
     protected $classes = [];
 
-    public function __construct(AbstractSp $saml = null, $classes = [])
+    public function __construct(AbstractSp $sp = null, $classes = [])
     {
         $this->classes = $classes;
 
@@ -32,9 +32,9 @@ class ResponseWrapper
         ) {
             return;
         }
-        $xmlString = isset($_GET['SAMLResponse']) ?
-            gzinflate(base64_decode($_GET['SAMLResponse'])) :
-            base64_decode($_POST['SAMLResponse']);
+        $xmlString = isset($_GET['SAMLResponse']) 
+            ? gzinflate(base64_decode($_GET['SAMLResponse']))
+            : base64_decode($_POST['SAMLResponse']);
         
         $this->xml = new \DOMDocument();
         $this->xml->loadXML($xmlString);
@@ -49,20 +49,25 @@ class ResponseWrapper
                 if (isset($_SESSION['spidSession'])) {
                     return;
                 }
-                if (is_null($saml)) {
+                if (is_null($sp)) {
                     return;
                 }
-                $this->response = new $this->classes['AuthnResponse']($saml);
+
+                $this->response = new $this->classes['AuthnResponse']($sp);
                 break;
+
             case 'LogoutResponse':
                 $this->response = new $this->classes['LogoutResponse']();
                 break;
+
             case 'LogoutRequest':
-                if (is_null($saml)) {
+                if (is_null($sp)) {
                     return;
                 }
-                $this->response = new $this->classes['LogoutRequest']($saml);
+
+                $this->response = new $this->classes['LogoutResponse']($sp);
                 break;
+                
             default:
                 throw new \Exception('No valid response found');
                 break;

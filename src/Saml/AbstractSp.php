@@ -27,7 +27,7 @@ abstract class AbstractSp implements SpInterface
 
     // Request classes
     protected $responseClasses = [
-        // 'AuthResponse' => In\AuthnResponse::class,
+        // 'AuthnResponse' => In\AuthnResponse::class,
         // 'LogoutRequest' => In\LogoutRequest::class,
         // 'LogoutResponse' => In\LogoutResponse::class,
     ];
@@ -38,6 +38,9 @@ abstract class AbstractSp implements SpInterface
     {
         Validator::validateSettings($settings, $this->settingsDefinition, $this->validAttributeFields);
         $this->settings = $settings;
+
+        // Let's start the session
+        session_start();
 
         // Do not attemp autoconfiguration if key and cert values have not been set
         if (!array_key_exists('sp_key_cert_values', $this->settings)) {

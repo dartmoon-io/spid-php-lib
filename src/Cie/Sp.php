@@ -72,7 +72,7 @@ class Sp extends AbstractSp
 
     // Request classes
     protected $responseClasses = [
-        'AuthResponse' => In\AuthnResponse::class,
+        'AuthnResponse' => In\AuthnResponse::class,
         'LogoutRequest' => In\LogoutRequest::class,
         'LogoutResponse' => In\LogoutResponse::class,
     ];
