@@ -112,10 +112,14 @@ abstract class AbstractSp implements SpInterface
             return $url;
         }
 
+        // Force session id regeneration
+        // to prevent errors
+        session_regenerate_id();
+
         header('Pragma: no-cache');
         header('Cache-Control: no-cache, must-revalidate');
         header('Location: ' . $url);
-        exit("");
+        exit;
     }
 
     public function isAuthenticated() : bool
@@ -168,10 +172,14 @@ abstract class AbstractSp implements SpInterface
             exit;
         }
 
+        // Force session id regeneration
+        // to prevent errors
+        session_regenerate_id();
+
         header('Pragma: no-cache');
         header('Cache-Control: no-cache, must-revalidate');
         header('Location: ' . $url);
-        exit("");
+        exit;
     }
 
     public function getAttributes() : array
