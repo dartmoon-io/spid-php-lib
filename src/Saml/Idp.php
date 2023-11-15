@@ -50,7 +50,7 @@ class Idp implements IdpInterface
         $metadata['idpEntityId'] = $xml->attributes()->entityID->__toString();
         $metadata['idpSSO'] = $idpSSO;
         $metadata['idpSLO'] = $idpSLO;
-        $metadata['idpCertValue'] = $this->formatCert($xml->xpath('//ds:X509Certificate')[0]->__toString());
+        $metadata['idpCertValue'] = $this->formatCert($xml->xpath('//md:KeyDescriptor[@use=\'signing\']//ds:X509Certificate')[0]->__toString());
 
         $this->idpFileName = $name;
         $this->metadata = $metadata;
