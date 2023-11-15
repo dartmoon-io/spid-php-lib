@@ -128,28 +128,22 @@ XML;
 XML;
         }
 
-        $xml .= <<<XML
-        <md:AttributeConsumingService index="99">
-            <md:ServiceName xml:lang="it">eIDAS Natural Person Minimum Attribute Set</md:ServiceName>       
-XML;
-        foreach ($attrcsArray[0] as $attr) {
+        foreach ($attrcsArray as $attrID => $attr) {
+            $name = $attrID == 99
+                ? 'eIDAS Natural Person Minimum Attribute Set'
+                : 'eIDAS Natural Person Full Attribute Set';
+                
             $xml .= <<<XML
-
-        <md:RequestedAttribute Name="$attr"/>
+            <md:AttributeConsumingService index="$attrID">
+                <md:ServiceName xml:lang="it">$name</md:ServiceName>       
 XML;
+            foreach ($attr as $attr) {
+                $xml .= <<<XML
+                <md:RequestedAttribute Name="$attr"/>
+XML;
+            }
+            $xml .= '</md:AttributeConsumingService>';
         }
-        $xml .= '</md:AttributeConsumingService>';
-        $xml .= <<<XML
-        <md:AttributeConsumingService index="100">
-            <md:ServiceName xml:lang="it">eIDAS Natural Person Full Attribute Set</md:ServiceName>       
-XML;
-        foreach ($attrcsArray[1] as $attr) {
-            $xml .= <<<XML
-
-        <md:RequestedAttribute Name="$attr"/>
-XML;
-        }
-        $xml .= '</md:AttributeConsumingService>';
         $xml .= '</md:SPSSODescriptor>';
 
 
