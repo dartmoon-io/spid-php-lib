@@ -80,6 +80,11 @@ class SignatureUtils
             $dom->getElementsByTagName('X509Certificate')->item(0)->nodeValue,
             true
         );
+
+        // Trim spaces
+        $certFingerprint = str_replace(' ', '', $certFingerprint);
+        $signCertFingerprint = str_replace(' ', '', $signCertFingerprint);
+
         if ($signCertFingerprint != $certFingerprint) {
             return false;
         }
