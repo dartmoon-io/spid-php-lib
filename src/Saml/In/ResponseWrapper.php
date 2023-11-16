@@ -66,7 +66,7 @@ class ResponseWrapper
                     return;
                 }
 
-                $this->response = new $this->classes['LogoutResponse']($sp);
+                $this->response = new $this->classes['LogoutRequest']($sp);
                 break;
                 
             default:
