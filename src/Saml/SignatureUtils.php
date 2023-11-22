@@ -138,17 +138,26 @@ class SignatureUtils
             "private_key_type" => OPENSSL_KEYTYPE_RSA,
         ));
         $dn = array(
-            "countryName" => $settings['sp_key_cert_values']['countryName'],
-            "stateOrProvinceName" => $settings['sp_key_cert_values']['stateOrProvinceName'],
-            "localityName" => $settings['sp_key_cert_values']['localityName'],
-            "organizationName" => $orgName = $settings['sp_org_name'],
-            "organizationalUnitName" => $settings['sp_org_display_name'],
+            "organizationName" => $settings['sp_org_name'],
             "commonName" => $settings['sp_key_cert_values']['commonName'],
-            "emailAddress" => $settings['sp_key_cert_values']['emailAddress']
+            "uri" => $settings['sp_entityid'],
+            "organizationIdentifier" => "PA:IT-" . $settings['sp_contact']['ipa_code'],
+            "countryName" => $settings['sp_key_cert_values']['countryName'],
+            "localityName" => $settings['sp_key_cert_values']['localityName'],
+            "stateOrProvinceName" => $settings['sp_key_cert_values']['stateOrProvinceName'],
+            "organizationalUnitName" => $settings['sp_org_display_name'],
+            "emailAddress" => $settings['sp_key_cert_values']['emailAddress'],
         );
-        $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
-        $myserial = (int) hexdec(bin2hex(openssl_random_pseudo_bytes(8)));
-        $configArgs = array("digest_alg" => "sha256");
+        $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256', 'config' => __DIR__ . '/../../openssl.cnf' ));
+        // Try until the serial is a positive number
+        $myserial = -1;
+        while ($myserial < 0) {
+            $myserial = (int) hexdec(bin2hex(openssl_random_pseudo_bytes(8)));
+        }
+        $configArgs = array(
+            'digest_alg' => 'sha256',
+            'config' => __DIR__ . '/../../openssl.cnf'
+        );
         $sscert = openssl_csr_sign($csr, null, $privkey, $numberofdays, $configArgs, $myserial);
         openssl_x509_export($sscert, $publickey);
         openssl_pkey_export($privkey, $privatekey);
