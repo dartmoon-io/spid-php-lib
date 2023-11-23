@@ -114,13 +114,21 @@ class SignatureUtils
 
     public static function certDNEquals($cert, $settings)
     {
-        $parsed = openssl_x509_parse($cert);
+        $parsed = openssl_x509_parse($cert, false);
         $dn = $parsed['subject'];
 
-        $newDN = [];
-        $newDN[] = $settings['sp_org_name'] ?? [];
-        $newDN[] = $settings['sp_org_display_name'] ?? [];
-        $newDN = array_merge($newDN, $settings['sp_key_cert_values'] ?? []);
+        $newDN = [
+            "organizationName" => $settings['sp_org_name'],
+            "commonName" => $settings['sp_key_cert_values']['commonName'],
+            "undefined" => $settings['sp_entityid'], // Undefined beacause this is the key returned by openssl_x509_parse
+            "organizationIdentifier" => "PA:IT-" . $settings['sp_contact']['ipa_code'],
+            "countryName" => $settings['sp_key_cert_values']['countryName'],
+            "localityName" => $settings['sp_key_cert_values']['localityName'],
+            "stateOrProvinceName" => $settings['sp_key_cert_values']['stateOrProvinceName'],
+            "organizationalUnitName" => $settings['sp_org_display_name'],
+            "emailAddress" => $settings['sp_key_cert_values']['emailAddress'],
+        ];
+
         asort($dn);
         asort($newDN);
 
