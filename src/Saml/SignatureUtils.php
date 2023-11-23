@@ -58,11 +58,11 @@ class SignatureUtils
         $key = file_get_contents($keyFile);
         $key = openssl_get_privatekey($key, "");
 
-        $msg = "SAMLRequest=" . rawurlencode($samlRequest);
-        if (isset($relayState)) {
-            $msg .= "&RelayState=" . rawurlencode($relayState);
-        }
-        $msg .= "&SigAlg=" . rawurlencode($signatureAlgo);
+        $msg = http_build_query([
+            'SAMLRequest' => $samlRequest,
+            'RelayState' => $relayState,
+            'SigAlg' => $signatureAlgo,
+        ]);
 
         openssl_sign($msg, $signature, $key, "SHA256");
         return base64_encode($signature);

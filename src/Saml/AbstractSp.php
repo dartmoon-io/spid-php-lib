@@ -108,13 +108,14 @@ abstract class AbstractSp implements SpInterface
         $_SESSION['idpEntityId'] = $idp->metadata['idpEntityId'];
         $_SESSION['acsUrl'] = $this->settings['sp_assertionconsumerservice'][$assertId];
 
-        if (!$shouldRedirect || $isPost) {
-            return $url;
-        }
-
         // Force session id regeneration
         // to prevent errors
         session_regenerate_id();
+
+        if (!$shouldRedirect || $isPost) {
+            echo $url;
+            exit;
+        }
 
         header('Pragma: no-cache');
         header('Cache-Control: no-cache, must-revalidate');

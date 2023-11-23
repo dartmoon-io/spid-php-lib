@@ -67,10 +67,13 @@ abstract class AbstractRequest implements RequestInterface
     {
         $SAMLRequest = base64_encode($this->xml);
 
-        $relayState = is_null($redirectTo) ? (isset($_SERVER['HTTPS']) &&
-            $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
+        $relayState = is_null($redirectTo) ? (isset($_SERVER['HTTPS'])
+            && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
             "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" : $redirectTo;
-        $relayState = null;
+
+        // Fix to mask the RelayState
+        $relayState = base64_encode(rawurlencode($relayState));
+
         return <<<HTML
 <html>
     <body onload="javascript:document.forms[0].submit()">
